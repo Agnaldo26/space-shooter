@@ -1,11 +1,11 @@
 const yourShip = document.querySelector('.player-shooter');
 const playArea = document.querySelector('#main-play-game');
 
-//funcionamento e tiro da nave
+//movimento e tiro da nave
 function flyShip(event){
     if(event.key === 'ArrowUp'){
         event.preventDefault() //Previne o comportamento padrão do browser
-        moveUp;
+        moveUp();
     } else if (event.key === 'ArrowDown'){
         event.preventDefault()
         moveDown();
@@ -15,4 +15,16 @@ function flyShip(event){
         fireLaser();
     }
     
+}
+
+//função de subir
+function moveUp() {
+    let topPosition = getComputedStyle(yourShip).getPropertyValue('top');
+    if(topPosition === "0px") {
+        return
+    } else {
+        let position = parseInt(topPosition);
+        position -= 50;
+        yourShip.style.top = `${position}px`;
+    }
 }
