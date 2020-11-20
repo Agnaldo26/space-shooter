@@ -1,7 +1,7 @@
 const yourShip = document.querySelector('.player-shooter');
 const playArea = document.querySelector('#main-play-area');
 const aliensImg = ['img/monster-1.png', 'img/monster-2.png', 'img/monster-3.png'];
-
+console.log(yourShip.classList, typeof(yourShip.classList));
 //movimento e tiro da nave
 function flyShip(event){
     if(event.key === 'ArrowUp'){
@@ -85,6 +85,22 @@ function createAliens () {
     newAlien.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
     playArea.appendchield(newAlien);
 
+}    
+
+//função para movimentar os inimigos
+function moveAlien(alien){
+    let moveAlienInterval = setInterval(() => {
+        let xPosition = parseInt(window.getComputedStyle(alien).getPropertyValue('left'));
+        if(xPosition <=50){
+            if(Array.from(alien.classList).includes('dead-alien')) /*Array.from retorna um objeto Array do objeto alien.classList */ { 
+                alien.remove();
+            } else {
+                //gameOver();
+            } 
+        }else {
+                alien.style.left = `${xPosition - 4}px`;
+        }
+    }, 30);
 }
 
 window.addEventListener('keydown', flyShip)
