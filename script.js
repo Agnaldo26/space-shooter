@@ -64,6 +64,15 @@ function createLaserElement() {
 function moveLaser(laser){
     let laserInterval = setInterval(() => {
         let xPosition = parseInt(laser.style.left);
+        let aliens = document.querySelectorAll('.alien');
+
+        aliens.forEach((alien) => {
+            if(checkLaserCollision(laser, alien)) { //comparando se  cada alien foi atingido, se sim, troca o src da imagem
+                alien.src ='img/explosion.png';
+                alien.classList.remove('alien');
+                alien.classList.add('dead-alien');
+            }
+        })
         
         if(xPosition === 340) {
             laser.remove();
@@ -83,7 +92,7 @@ function createAliens () {
     newAlien.classList.add('alien-transition');
     newAlien.style.left = '370px';
     newAlien.style.top = `${Math.floor(Math.random() * 330) + 30}px`;
-    playArea.appendchield(newAlien);
+    playArea.appendChild(newAlien);
 
 }    
 
@@ -91,8 +100,10 @@ function createAliens () {
 function moveAlien(alien){
     let moveAlienInterval = setInterval(() => {
         let xPosition = parseInt(window.getComputedStyle(alien).getPropertyValue('left'));
+        
+
         if(xPosition <=50){
-            if(Array.from(alien.classList).includes('dead-alien')) /*Array.from retorna um objeto Array do objeto alien.classList */ { 
+            if(Array.from(alien.classList).includes('dead-alien')) { //Array.from retorna um objeto Array do objeto alien.classList  
                 alien.remove();
             } else {
                 //gameOver();
@@ -103,4 +114,26 @@ function moveAlien(alien){
     }, 30);
 }
 
+//função para colisão
+function checkLaserCollision(laser, alien) {
+    let laserTop = parseInt(laser.style.top);
+    let laserLeft = parseInt(laser.style.left);
+    let laserBottom = laserTop-20;
+    let alienTop = parseInt(alien.style.top);
+    let alienLeft = parseInt(alien.style.left);
+    let alienBottom = alienTop - 30;
+    
+    if(laserLeft != 340 && laserLeft + 40 >= alienLeft){
+        if(laserTop <= alienTop && laserTop >= alienBottom){
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 window.addEventListener('keydown', flyShip)
+
+createAliens()
